@@ -360,7 +360,7 @@ async function connectWallet() {
 
     } catch (error) {
       console.error('Wallet connection error:', error);
-      if (error.code === 4001) {
+      if (error.code === 4001) { //User rejected the request
         action_msg.innerHTML = "Please connect your wallet to play.";
       } else {
         action_msg.innerHTML = "Wallet connection error: " + error.message;

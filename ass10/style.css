@@ -6,6 +6,8 @@
 
 body {
     background-color: #181823;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
 }
 
 header {
@@ -17,19 +19,209 @@ header>h3 {
     color: #181823;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
+}
 
+.main-container {
+    display: flex;
+    min-height: calc(100vh - 80px);
+    position: relative;
+}
+
+/* History Panel - Fixed on Right Side */
+.history-panel {
+    width: 350px;
+    background: #181823;
+    color: white;
+    border-left: 3px solid #E2584D;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    right: 0;
+    top: 80px;
+    bottom: 0;
+    z-index: 10;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.panel-header {
+    padding: 20px;
+    background: #181823;
+    border-bottom: 2px solid #E2584D;
+}
+
+.panel-header h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.winrate-display {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.winrate-item {
+    text-align: center;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    min-width: 80px;
+}
+
+.winrate-item span:first-child {
+    display: block;
+    font-size: 0.9em;
+    opacity: 0.9;
+    margin-bottom: 4px;
+}
+
+.winrate-item span:last-child {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.win-label {
+    color: #00ff88;
+}
+
+.loss-label {
+    color: #ff4d4d;
+}
+
+.draw-label {
+    color: #ffcc00;
+}
+
+.history-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.history-item {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-left: 4px solid;
+    font-size: 0.9em;
+    transition: transform 0.2s ease;
+}
+
+.history-item:hover {
+    transform: translateX(-5px);
+}
+
+.history-item.win {
+    border-left-color: #00ff88;
+    background: rgba(0, 255, 136, 0.08);
+}
+
+.history-item.loss {
+    border-left-color: #ff4d4d;
+    background: rgba(255, 77, 77, 0.08);
+}
+
+.history-item.draw {
+    border-left-color: #ffcc00;
+    background: rgba(255, 204, 0, 0.08);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 0.85em;
+    opacity: 0.8;
+}
+
+.history-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.choice-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1em;
+}
+
+.result-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+}
+
+.result-badge.win {
+    background-color: #00ff88;
+    color: #181823;
+}
+
+.result-badge.loss {
+    background-color: #ff4d4d;
+}
+
+.result-badge.draw {
+    background-color: #ffcc00;
+    color: #181823;
+}
+
+.amount-change {
+    font-weight: bold;
+    font-size: 1em;
+    text-align: right;
+}
+
+.amount-change.positive {
+    color: #00ff88;
+}
+
+.amount-change.negative {
+    color: #ff4d4d;
+}
+
+.amount-change.neutral {
+    color: #ffcc00;
+}
+
+.history-empty {
+    text-align: center;
+    padding: 40px 15px;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+/* Game Content - Takes remaining space on left */
+.game-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 350px; /* Reserve space for history panel */
+    max-width: calc(100% - 350px);
+    overflow-x: hidden;
 }
 
 .score-board {
     margin: 20px auto;
     border: 3px solid white;
-
     text-align: center;
     width: 200px;
     color: white;
     font-size: 46px;
     padding: 15px 20px;
-    font-family: Arial, Helvetica, sans-serif;
     position: relative;
 }
 
@@ -38,7 +230,7 @@ header>h3 {
     color: white;
     font-size: 14px;
     padding: 2px 10px;
-    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 3px;
 }
 
 #user-label {
@@ -54,68 +246,85 @@ header>h3 {
 }
 
 .result {
-    font-size: 33px;
+    font-size: 28px;
     color: white;
+    margin: 15px 0;
 }
 
 .result>p {
     text-align: center;
     font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .choices {
-    margin: 40px;
+    margin: 30px 0;
     text-align: center;
 }
 
 .choice {
-    border: 4px solid, white;
-    margin: 0 20px;
-    padding: 10px;
+    border: 4px solid white;
+    border-radius: 50%;
+    margin: 0 15px;
+    padding: 15px;
     display: inline-block;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
 }
 
 .choice:hover {
-    cursor: pointer;
-    background: rgb(255, 255, 255);
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.choice img {
+    width: 70px;
+    height: 70px;
 }
 
 #action-msg {
     text-align: center;
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
+    margin: 15px 0;
 }
 
 .connectBtn {
     display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
+    margin: 15px auto;
+    padding: 12px 30px;
     font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
     background-color: #E2584D;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.connectBtn:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(226, 88, 77, 0.3);
 }
 
 .betting-section {
     text-align: center;
-    margin: 20px auto;
-    padding: 15px;
+    margin: 15px auto;
+    padding: 20px;
     border-radius: 10px;
-    max-width: 300px;
+    width: 300px;
 }
 
 .betting-section label {
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
     display: block;
     margin-bottom: 10px;
     font-weight: bold;
+    font-size: 1em;
 }
 
 #betAmount {
@@ -126,7 +335,15 @@ header>h3 {
     background: white;
     color: #181823;
     text-align: center;
-    width: 150px;
+    width: 180px;
+    margin-bottom: 8px;
+    transition: border-color 0.3s ease;
+}
+
+#betAmount:focus {
+    outline: none;
+    border-color: #ffcc00;
+
 }
 
 .bet-info {
@@ -134,6 +351,134 @@ header>h3 {
 }
 
 .bet-info small {
-    color: #ffffff;
-    font-family: Arial, Helvetica, sans-serif;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85em;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .history-panel {
+        position: static;
+        width: 100%;
+        border-left: none;
+        border-top: 3px solid #E2584D;
+        order: 2;
+        max-height: 300px;
+        box-shadow: none;
+    }
+    
+    .game-content {
+        order: 1;
+        margin-right: 0;
+        max-width: 100%;
+        padding: 20px 10px;
+    }
+    
+    .panel-header {
+        padding: 15px;
+    }
+    
+    .winrate-display {
+        padding: 10px;
+    }
+    
+    .winrate-item {
+        min-width: 60px;
+        padding: 8px 10px;
+    }
+    
+    .choice {
+        margin: 0 10px;
+        padding: 12px;
+    }
+    
+    .choice img {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .choices {
+        margin: 20px 0;
+    }
+    
+    .choice {
+        margin: 0 8px;
+        padding: 10px;
+    }
+    
+    .choice img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .score-board {
+        width: 180px;
+        font-size: 36px;
+        padding: 10px 15px;
+    }
+    
+    #user-label, #computer-label {
+        font-size: 12px;
+    }
+    
+    #user-label {
+        left: -20px;
+    }
+    
+    #computer-label {
+        right: -25px;
+    }
+    
+    .result {
+        font-size: 22px;
+    }
+    
+    .betting-section {
+        width: 90%;
+        padding: 15px;
+    }
+    
+    #betAmount {
+        width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .history-panel {
+        max-height: 250px;
+    }
+    
+    .choice {
+        margin: 0 5px;
+        padding: 8px;
+    }
+    
+    .choice img {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .score-board {
+        width: 160px;
+        font-size: 32px;
+    }
+    
+    .result {
+        font-size: 20px;
+    }
+    
+    #action-msg {
+        font-size: 16px;
+    }
+    
+    .connectBtn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
 }

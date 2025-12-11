@@ -1,131 +1,112 @@
-// NFT Data with image references
+// NFT Data - connecting images with their metadata
 const nftData = [
     {
         id: 1,
-        name: "Alice Johnson",
-        program: "Computer Science",
-        grade: "A+",
-        graduationDate: "2023-05-15",
-        tokenId: "CS2023-001",
+        author: "Bektassova Anel",
+        description: "carefree",
         image: "images/1.png",
-        university: "MIT",
-        description: "Graduated with honors in Computer Science"
+        metadataFile: "metadata/1.json"
     },
     {
         id: 2,
-        name: "Bob Smith",
-        program: "Business Administration",
-        grade: "A",
-        graduationDate: "2023-05-16",
-        tokenId: "BA2023-002",
+        author: "Bektassova Anel",
+        description: "playful",
         image: "images/2.png",
-        university: "Harvard",
-        description: "Specialized in Entrepreneurship"
+        metadataFile: "metadata/2.json"
     },
     {
         id: 3,
-        name: "Carol Davis",
-        program: "Data Science",
-        grade: "A+",
-        graduationDate: "2023-05-17",
-        tokenId: "DS2023-003",
+        author: "Bektassova Anel",
+        description: "sad",
         image: "images/3.png",
-        university: "Stanford",
-        description: "Focus on Machine Learning and AI"
+        metadataFile: "metadata/3.json"
     },
     {
         id: 4,
-        name: "David Wilson",
-        program: "Engineering",
-        grade: "B+",
-        graduationDate: "2023-05-18",
-        tokenId: "EN2023-004",
+        author: "Bektassova Anel",
+        description: "worried",
         image: "images/4.png",
-        university: "Caltech",
-        description: "Mechanical Engineering major"
+        metadataFile: "metadata/4.json"
     },
     {
         id: 5,
-        name: "Emma Brown",
-        program: "Computer Science",
-        grade: "A",
-        graduationDate: "2023-05-19",
-        tokenId: "CS2023-005",
+        author: "Bektassova Anel",
+        description: "curious",
         image: "images/5.png",
-        university: "Stanford",
-        description: "Specialized in Software Engineering"
+        metadataFile: "metadata/5.json"
     },
     {
         id: 6,
-        name: "Frank Miller",
-        program: "Cybersecurity",
-        grade: "A-",
-        graduationDate: "2023-05-20",
-        tokenId: "CY2023-006",
+        author: "Bektassova Anel",
+        description: "respectful",
         image: "images/6.png",
-        university: "Carnegie Mellon",
-        description: "Network Security expert"
+        metadataFile: "metadata/6.json"
     },
     {
         id: 7,
-        name: "Grace Taylor",
-        program: "Business Administration",
-        grade: "B+",
-        graduationDate: "2023-05-21",
-        tokenId: "BA2023-007",
+        author: "Bektassova Anel",
+        description: "puzzled",
         image: "images/7.png",
-        university: "Wharton",
-        description: "Finance and Investment specialization"
+        metadataFile: "metadata/7.json"
     },
     {
         id: 8,
-        name: "Henry Clark",
-        program: "Data Science",
-        grade: "A",
-        graduationDate: "2023-05-22",
-        tokenId: "DS2023-008",
+        author: "Bektassova Anel",
+        description: "happy",
         image: "images/8.png",
-        university: "MIT",
-        description: "Big Data Analytics focus"
+        metadataFile: "metadata/8.json"
     },
     {
         id: 9,
-        name: "Ivy Martinez",
-        program: "Engineering",
-        grade: "A+",
-        graduationDate: "2023-05-23",
-        tokenId: "EN2023-009",
+        author: "Bektassova Anel",
+        description: "angry",
         image: "images/9.png",
-        university: "Georgia Tech",
-        description: "Electrical Engineering with Robotics"
+        metadataFile: "metadata/9.json"
     },
     {
         id: 10,
-        name: "Jack Lee",
-        program: "Computer Science",
-        grade: "A-",
-        graduationDate: "2023-05-24",
-        tokenId: "CS2023-010",
+        author: "Bektassova Anel",
+        description: "lost",
         image: "images/10.png",
-        university: "UC Berkeley",
-        description: "Computer Graphics and Game Development"
+        metadataFile: "metadata/10.json"
     }
 ];
 
-// DOM Elements
-let currentView = 'grid';
-let currentFilters = {
-    search: '',
-    program: '',
-    grade: ''
-};
+// Store loaded metadata
+let nftMetadata = {};
 
 // Initialize the application
 function init() {
     renderGallery();
-    populateFilters();
     setupEventListeners();
-    updateStats();
+    loadAllMetadata();
+}
+
+// Load all metadata files
+async function loadAllMetadata() {
+    for (const nft of nftData) {
+        try {
+            const response = await fetch(nft.metadataFile);
+            if (response.ok) {
+                const metadata = await response.json();
+                nftMetadata[nft.id] = metadata;
+            } else {
+                // Fallback to basic info if metadata file not found
+                nftMetadata[nft.id] = {
+                    author: nft.author,
+                    description: nft.description,
+                    image: nft.image
+                };
+            }
+        } catch (error) {
+            console.warn(`Could not load metadata for NFT ${nft.id}:`, error);
+            nftMetadata[nft.id] = {
+                author: nft.author,
+                description: nft.description,
+                image: nft.image
+            };
+        }
+    }
 }
 
 // Render the NFT gallery
@@ -139,11 +120,10 @@ function renderGallery() {
         gallery.innerHTML = `
             <div class="no-results">
                 <i class="fas fa-search"></i>
-                <h3>No certificates found</h3>
-                <p>Try adjusting your search or filters</p>
+                <h3>No NFTs found</h3>
+                <p>Try adjusting your search</p>
             </div>
         `;
-        updateStats();
         return;
     }
     
@@ -151,8 +131,6 @@ function renderGallery() {
         const card = createNFTCard(nft);
         gallery.appendChild(card);
     });
-    
-    updateStats();
 }
 
 // Create an NFT card element
@@ -161,152 +139,116 @@ function createNFTCard(nft) {
     card.className = 'nft-card';
     card.dataset.id = nft.id;
     
-    const imageUrl = nft.image || `images/${(nft.id % 10) + 1}.png`;
-    
     card.innerHTML = `
         <div class="nft-image">
-            <img src="${imageUrl}" alt="${nft.name}'s Certificate" loading="lazy">
-            <div class="certificate-badge">
-                <i class="fas fa-certificate"></i> NFT
+            <img src="${nft.image}" alt="${nft.description}" loading="lazy">
+            <button class="info-btn" title="View Metadata">
+                <i class="fas fa-info-circle"></i>
+            </button>
+            <div class="image-overlay">
+                <i class="fas fa-expand-alt"></i>
             </div>
-            <div class="token-id">${nft.tokenId}</div>
         </div>
         <div class="nft-info">
-            <div class="graduate-name">
-                <i class="fas fa-user-graduate"></i>
-                ${nft.name}
-            </div>
-            <div class="program">
-                <i class="fas fa-book"></i>
-                ${nft.program}
-            </div>
-            <div class="details">
-                <i class="fas fa-university"></i>
-                ${nft.university}
-            </div>
-            <div class="details">
-                <i class="fas fa-calendar-alt"></i>
-                Graduated: ${formatDate(nft.graduationDate)}
-            </div>
-            <div class="grade">
-                <i class="fas fa-star"></i>
-                Grade: ${nft.grade}
-            </div>
-            ${nft.description ? `<div class="details" style="margin-top: 15px; font-style: italic;">
-                <i class="fas fa-quote-left"></i>
-                ${nft.description}
-            </div>` : ''}
+            <div class="nft-name">${nft.description}</div>
+            <div class="nft-author">By: ${nft.author}</div>
+            <div class="nft-id">ID: ${nft.id}</div>
         </div>
     `;
     
-    // Add click effect
-    card.addEventListener('click', () => {
-        card.style.transform = 'scale(0.98)';
-        setTimeout(() => {
-            card.style.transform = '';
-        }, 200);
-        showNFTDetails(nft);
+    // Add click events
+    const imageContainer = card.querySelector('.nft-image');
+    const infoBtn = card.querySelector('.info-btn');
+    
+    // Click image to enlarge
+    imageContainer.addEventListener('click', (e) => {
+        if (e.target !== infoBtn && !infoBtn.contains(e.target)) {
+            showImageModal(nft);
+        }
+    });
+    
+    // Click info button for metadata
+    infoBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent triggering image click
+        showMetadataModal(nft);
     });
     
     return card;
 }
 
-// Show NFT details (simple alert for now)
-function showNFTDetails(nft) {
-    const details = `
-        🎓 ${nft.name}
-        📚 ${nft.program} - ${nft.university}
-        ⭐ Grade: ${nft.grade}
-        📅 ${formatDate(nft.graduationDate)}
-        🔖 Token ID: ${nft.tokenId}
-        
-        ${nft.description}
+// Show image modal
+function showImageModal(nft) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalImageTitle');
+    const modalDesc = document.getElementById('modalImageDesc');
+    
+    modalImage.src = nft.image;
+    modalImage.alt = nft.description;
+    modalTitle.textContent = nft.description;
+    modalDesc.textContent = `By: ${nft.author}`;
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+// Show metadata modal
+function showMetadataModal(nft) {
+    const modal = document.getElementById('metadataModal');
+    const basicInfo = document.getElementById('basicInfo');
+    const rawJSON = document.getElementById('rawJSON');
+    
+    const metadata = nftMetadata[nft.id] || {
+        author: nft.author,
+        description: nft.description,
+        image: nft.image
+    };
+    
+    // Populate basic info
+    basicInfo.innerHTML = `
+        <div class="info-item">
+            <div class="info-label">Description / Emotion</div>
+            <div class="info-value">${metadata.description}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Author</div>
+            <div class="info-value">${metadata.author || metadata.name || 'Unknown'}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Image URL</div>
+            <div class="info-value">${metadata.image}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">NFT ID</div>
+            <div class="info-value">${nft.id}</div>
+        </div>
     `;
     
-    // In a real app, you would show a modal here
-    console.log('NFT Details:', details);
-    alert(`🎓 ${nft.name}\n📚 ${nft.program}\n⭐ Grade: ${nft.grade}\n📅 ${formatDate(nft.graduationDate)}`);
+    // Show raw JSON
+    rawJSON.textContent = JSON.stringify(metadata, null, 2);
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
 }
 
-// Format date
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+// Close modals
+function closeModals() {
+    document.getElementById('imageModal').style.display = 'none';
+    document.getElementById('metadataModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
 }
 
-// Get filtered NFTs based on current filters
+// Get filtered NFTs based on search
 function getFilteredNFTs() {
+    const searchInput = document.getElementById('searchInput');
+    const searchTerm = searchInput.value.toLowerCase();
+    
+    if (!searchTerm) return nftData;
+    
     return nftData.filter(nft => {
-        // Search filter
-        const searchTerm = currentFilters.search.toLowerCase();
-        const matchesSearch = !searchTerm || 
-            nft.name.toLowerCase().includes(searchTerm) ||
-            nft.program.toLowerCase().includes(searchTerm) ||
-            nft.grade.toLowerCase().includes(searchTerm) ||
-            nft.university.toLowerCase().includes(searchTerm) ||
-            nft.tokenId.toLowerCase().includes(searchTerm);
-        
-        // Program filter
-        const matchesProgram = !currentFilters.program || nft.program === currentFilters.program;
-        
-        // Grade filter
-        const matchesGrade = !currentFilters.grade || nft.grade === currentFilters.grade;
-        
-        return matchesSearch && matchesProgram && matchesGrade;
+        return nft.author.toLowerCase().includes(searchTerm) ||
+               nft.description.toLowerCase().includes(searchTerm);
     });
-}
-
-// Populate filter dropdowns
-function populateFilters() {
-    const programFilter = document.getElementById('programFilter');
-    const gradeFilter = document.getElementById('gradeFilter');
-    
-    // Get unique programs and grades
-    const programs = [...new Set(nftData.map(nft => nft.program))].sort();
-    const grades = [...new Set(nftData.map(nft => nft.grade))].sort((a, b) => {
-        // Custom sort for grades
-        const gradeOrder = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D', 'F'];
-        return gradeOrder.indexOf(a) - gradeOrder.indexOf(b);
-    });
-    
-    // Add program options
-    programs.forEach(program => {
-        const option = document.createElement('option');
-        option.value = program;
-        option.textContent = program;
-        programFilter.appendChild(option);
-    });
-    
-    // Add grade options
-    grades.forEach(grade => {
-        const option = document.createElement('option');
-        option.value = grade;
-        option.textContent = grade;
-        gradeFilter.appendChild(option);
-    });
-}
-
-// Update statistics
-function updateStats() {
-    const filteredNFTs = getFilteredNFTs();
-    const showingCount = document.getElementById('showingCount');
-    const totalCount = document.getElementById('totalCount');
-    const activeFilters = document.getElementById('activeFilters');
-    
-    showingCount.textContent = filteredNFTs.length;
-    totalCount.textContent = nftData.length;
-    
-    // Update active filters display
-    const filters = [];
-    if (currentFilters.search) filters.push(`Search: "${currentFilters.search}"`);
-    if (currentFilters.program) filters.push(`Program: ${currentFilters.program}`);
-    if (currentFilters.grade) filters.push(`Grade: ${currentFilters.grade}`);
-    
-    activeFilters.textContent = filters.length > 0 ? filters.join(', ') : 'None';
 }
 
 // Setup event listeners
@@ -315,28 +257,23 @@ function setupEventListeners() {
     const searchInput = document.getElementById('searchInput');
     const clearSearch = document.getElementById('clearSearch');
     
-    searchInput.addEventListener('input', (e) => {
-        currentFilters.search = e.target.value;
+    searchInput.addEventListener('input', () => {
         renderGallery();
     });
     
     clearSearch.addEventListener('click', () => {
         searchInput.value = '';
-        currentFilters.search = '';
         renderGallery();
     });
     
-    // Program filter
-    const programFilter = document.getElementById('programFilter');
-    programFilter.addEventListener('change', (e) => {
-        currentFilters.program = e.target.value;
-        renderGallery();
-    });
-    
-    // Grade filter
-    const gradeFilter = document.getElementById('gradeFilter');
-    gradeFilter.addEventListener('change', (e) => {
-        currentFilters.grade = e.target.value;
+    // Sort by
+    const sortBy = document.getElementById('sortBy');
+    sortBy.addEventListener('change', () => {
+        if (sortBy.value === 'name') {
+            nftData.sort((a, b) => a.description.localeCompare(b.description));
+        } else {
+            nftData.sort((a, b) => a.id - b.id);
+        }
         renderGallery();
     });
     
@@ -344,89 +281,36 @@ function setupEventListeners() {
     const resetFilters = document.getElementById('resetFilters');
     resetFilters.addEventListener('click', () => {
         searchInput.value = '';
-        programFilter.value = '';
-        gradeFilter.value = '';
-        
-        currentFilters = {
-            search: '',
-            program: '',
-            grade: ''
-        };
-        
+        sortBy.value = 'id';
+        nftData.sort((a, b) => a.id - b.id);
         renderGallery();
     });
     
-    // View options
-    const viewGrid = document.getElementById('viewGrid');
-    const viewList = document.getElementById('viewList');
-    const gallery = document.getElementById('nftGallery');
-    
-    viewGrid.addEventListener('click', () => {
-        currentView = 'grid';
-        gallery.classList.remove('list-view');
-        viewGrid.classList.add('active');
-        viewList.classList.remove('active');
+    // Close modal buttons
+    document.querySelectorAll('.close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', closeModals);
     });
     
-    viewList.addEventListener('click', () => {
-        currentView = 'list';
-        gallery.classList.add('list-view');
-        viewList.classList.add('active');
-        viewGrid.classList.remove('active');
-    });
-    
-    // Debounce search for better performance
-    let searchTimeout;
-    searchInput.addEventListener('input', () => {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            renderGallery();
-        }, 300);
-    });
-}
-
-// Generate more NFTs (if needed)
-function generateMoreNFTs(count) {
-    const firstNames = ['John', 'Jane', 'Alex', 'Sarah', 'Mike', 'Lisa', 'Tom', 'Emily', 'Chris', 'Katie'];
-    const lastNames = ['Doe', 'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Miller', 'Davis', 'Wilson', 'Moore'];
-    const programs = ['Computer Science', 'Business Administration', 'Data Science', 'Engineering', 'Cybersecurity', 'Mathematics', 'Physics', 'Biology', 'Chemistry', 'Economics'];
-    const universities = ['MIT', 'Harvard', 'Stanford', 'Caltech', 'UC Berkeley', 'Carnegie Mellon', 'Princeton', 'Yale', 'Columbia', 'UChicago'];
-    const grades = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-'];
-    
-    const currentYear = 2023;
-    const startId = nftData.length + 1;
-    
-    for (let i = 0; i < count; i++) {
-        const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-        const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-        const program = programs[Math.floor(Math.random() * programs.length)];
-        const grade = grades[Math.floor(Math.random() * grades.length)];
-        const university = universities[Math.floor(Math.random() * universities.length)];
-        const graduationDate = `${currentYear}-05-${String(15 + (i % 15)).padStart(2, '0')}`;
-        const programCode = program.split(' ').map(w => w[0]).join('');
-        const tokenId = `${programCode}${currentYear}-${String(startId + i).padStart(3, '0')}`;
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+        const imageModal = document.getElementById('imageModal');
+        const metadataModal = document.getElementById('metadataModal');
         
-        nftData.push({
-            id: startId + i,
-            name: `${firstName} ${lastName}`,
-            program: program,
-            grade: grade,
-            graduationDate: graduationDate,
-            tokenId: tokenId,
-            image: `images/${((startId + i - 1) % 10) + 1}.png`,
-            university: university,
-            description: `Graduated with distinction in ${program}`
-        });
-    }
+        if (e.target === imageModal) {
+            closeModals();
+        }
+        if (e.target === metadataModal) {
+            closeModals();
+        }
+    });
     
-    // Reinitialize with new data
-    init();
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModals();
+        }
+    });
 }
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', init);
-
-// Export for testing (optional)
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { nftData, getFilteredNFTs };
-}

@@ -3,68 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFT Certificate Gallery</title>
+    <title>NFT Gallery</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-graduation-cap"></i> NFT Certificate Gallery</h1>
-            <p class="subtitle">Browse graduate certificates stored as NFTs on the blockchain</p>
+            <h1>NFT Gallery</h1>
         </header>
 
         <div class="controls">
             <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search by name, program, or grade...">
-                <button id="clearSearch"><i class="fas fa-times"></i></button>
+                <input type="text" id="searchInput" placeholder="Search by emotion or author...">
+                <button id="clearSearch" style="display:none;">Clear</button>
             </div>
             <div class="filter-group">
-                <div class="filter">
-                    <i class="fas fa-book"></i>
-                    <select id="programFilter">
-                        <option value="">All Programs</option>
-                    </select>
-                </div>
-                <div class="filter">
-                    <i class="fas fa-star"></i>
-                    <select id="gradeFilter">
-                        <option value="">All Grades</option>
-                    </select>
-                </div>
+                <select id="sortBy">
+                    <option value="id">Sort by ID</option>
+                    <option value="name">Sort by Emotion</option>
+                </select>
                 <button id="resetFilters" class="btn-reset">
-                    <i class="fas fa-redo"></i> Reset
+                    Reset
                 </button>
             </div>
         </div>
 
         <div class="stats">
             <div class="stat-item">
-                <i class="fas fa-certificate"></i>
-                <span>Showing <span id="showingCount">0</span> of <span id="totalCount">0</span> certificates</span>
+                <i class="fas fa-images"></i>
+                <span>Total: <span id="totalCount">10</span> NFTs</span>
             </div>
             <div class="stat-item">
-                <i class="fas fa-filter"></i>
-                <span>Filter: <span id="activeFilters">None</span></span>
+                <i class="fas fa-info-circle"></i>
+                <span>Click image to enlarge • Click <i class="fas fa-info"></i> for metadata</span>
             </div>
         </div>
 
         <div class="gallery" id="nftGallery">
-         
+            <!-- NFT cards loaded here -->
         </div>
 
-        <div class="view-options">
-            <button id="viewGrid" class="view-btn active">
-                <i class="fas fa-th"></i> Grid
-            </button>
-            <button id="viewList" class="view-btn">
-                <i class="fas fa-list"></i> List
-            </button>
+        <!-- Image Modal -->
+        <div id="imageModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-image-container">
+                    <img id="modalImage" src="" alt="">
+                </div>
+                <div class="modal-image-info">
+                    <h3 id="modalImageTitle"></h3>
+                    <p id="modalImageDesc"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metadata Modal -->
+        <div id="metadataModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Metadata</h2>
+                <div class="metadata-content">
+                    <div class="metadata-section">
+                        <h3>Information</h3>
+                        <div id="basicInfo" class="info-grid"></div>
+                    </div>
+                    <div class="metadata-section">
+                        <h3>Raw JSON</h3>
+                        <pre id="rawJSON"></pre>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <footer>
-            <p>NFT Certificates Gallery DApp • All certificates are stored on the blockchain</p>
+            <p>Thats is folks</p>
         </footer>
     </div>
 

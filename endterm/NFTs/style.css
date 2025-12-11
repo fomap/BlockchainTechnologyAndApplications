@@ -1,0 +1,488 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --accent-color: #ff6b6b;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --gray-color: #6c757d;
+    --border-color: #dee2e6;
+    --success-color: #51cf66;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 25px;
+    border-bottom: 3px solid var(--border-color);
+}
+
+h1 {
+    color: var(--dark-color);
+    margin-bottom: 15px;
+    font-size: 2.8em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+h1 i {
+    color: var(--primary-color);
+}
+
+.subtitle {
+    color: var(--gray-color);
+    font-size: 1.2em;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.controls {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 350px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box i {
+    position: absolute;
+    left: 20px;
+    color: var(--gray-color);
+    font-size: 18px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 16px 60px 16px 50px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: var(--light-color);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    background: white;
+}
+
+.search-box button {
+    position: absolute;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--gray-color);
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.search-box button:hover {
+    color: var(--accent-color);
+}
+
+.filter-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.filter i {
+    position: absolute;
+    left: 15px;
+    color: var(--gray-color);
+    z-index: 1;
+}
+
+.filter select {
+    padding: 16px 20px 16px 45px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 16px;
+    background: var(--light-color);
+    cursor: pointer;
+    min-width: 180px;
+    appearance: none;
+    transition: all 0.3s;
+}
+
+.filter select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    background: white;
+}
+
+.btn-reset {
+    padding: 16px 25px;
+    background: var(--light-color);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--gray-color);
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.btn-reset:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, var(--light-color) 0%, #e9ecef 100%);
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    border-left: 5px solid var(--primary-color);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--dark-color);
+    font-size: 1.1em;
+}
+
+.stat-item i {
+    color: var(--primary-color);
+    font-size: 1.2em;
+}
+
+#activeFilters {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.gallery.list-view {
+    grid-template-columns: 1fr;
+}
+
+.gallery.list-view .nft-card {
+    display: flex;
+    max-width: 100%;
+    height: auto;
+}
+
+.gallery.list-view .nft-image {
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+}
+
+.gallery.list-view .nft-info {
+    flex: 1;
+    padding: 25px;
+}
+
+.nft-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.nft-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.nft-image {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+}
+
+.nft-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.nft-card:hover .nft-image img {
+    transform: scale(1.05);
+}
+
+.certificate-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+}
+
+.nft-info {
+    padding: 25px;
+}
+
+.graduate-name {
+    font-size: 1.4em;
+    color: var(--dark-color);
+    margin-bottom: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.graduate-name i {
+    color: var(--primary-color);
+}
+
+.program {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.details {
+    color: var(--gray-color);
+    margin-bottom: 8px;
+    font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.grade {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: linear-gradient(135deg, #e8f4ff 0%, #d0e7ff 100%);
+    color: var(--primary-color);
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1em;
+    margin-top: 15px;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+}
+
+.token-id {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-family: monospace;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray-color);
+}
+
+.no-results i {
+    font-size: 4em;
+    margin-bottom: 20px;
+    color: var(--border-color);
+}
+
+.no-results h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: var(--dark-color);
+}
+
+.view-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.view-btn {
+    padding: 12px 25px;
+    background: var(--light-color);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--gray-color);
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.view-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.view-btn:hover:not(.active) {
+    background: var(--border-color);
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    border-top: 2px solid var(--border-color);
+    color: var(--gray-color);
+    font-size: 0.95em;
+    margin-top: 30px;
+}
+
+/* Loading animation */
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+.loading {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-size: 1000px 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 2em;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .controls {
+        flex-direction: column;
+    }
+    
+    .search-box, .filter select {
+        min-width: 100%;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .stats {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .gallery.list-view .nft-card {
+        flex-direction: column;
+    }
+    
+    .gallery.list-view .nft-image {
+        width: 100%;
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter select, .btn-reset {
+        width: 100%;
+    }
+}

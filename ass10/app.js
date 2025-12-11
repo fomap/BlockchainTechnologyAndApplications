@@ -192,27 +192,25 @@ function getChoiceIcon(letter) {
 function win(userChoice, computerChoice) {
     userScore++;
     wins++;
-    // FIXED: Update BOTH scores and winrate display
     userScore_span.innerHTML = userScore;
     computerScore_span.innerHTML = computerScore;
-    updateWinrateDisplay(); // FIXED: Added this line
+    updateWinrateDisplay(); 
     result_p.innerHTML = `${convertToWord(userChoice)} (user) beats ${convertToWord(computerChoice)}(comp). You win, yay!`;
 }
 
 function lose(userChoice, computerChoice) {
     computerScore++;
     losses++;
-    // FIXED: Update BOTH scores and winrate display
+
     userScore_span.innerHTML = userScore;
     computerScore_span.innerHTML = computerScore;
-    updateWinrateDisplay(); // FIXED: Added this line
+    updateWinrateDisplay(); 
     result_p.innerHTML = `${convertToWord(userChoice)} (user) loses to ${convertToWord(computerChoice)}(comp). You lost, womp womp.`;
 }
 
 function draw(userChoice, computerChoice) {
     draws++;
-    // FIXED: Update winrate display
-    updateWinrateDisplay(); // FIXED: Added this line
+    updateWinrateDisplay(); 
     result_p.innerHTML = `${convertToWord(userChoice)} (user) equals ${convertToWord(computerChoice)}(comp). It's a draw, ggs ig`;
 }
 
@@ -227,14 +225,13 @@ function addGameToHistory(index, playerChoice, computerChoice, betAmount, result
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
     
-    gameHistory.unshift(historyItem); // Add to beginning for newest first
+    gameHistory.unshift(historyItem);
     
-    // Keep only last 20 games to avoid clutter
+
     if (gameHistory.length > 20) {
         gameHistory.pop();
     }
-    
-    // Update history list
+
     updateHistoryList();
 }
 
